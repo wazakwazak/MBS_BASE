@@ -91,6 +91,7 @@ mBool AddByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 			// add data for the first time.
 			_pstList->pstFront = pstNewNode;
 			_pstList->pstRear  = pstNewNode;
+			_pstList->unCount++;
 			bRetVal = mTrue;
 		}
 		else
@@ -106,6 +107,193 @@ mBool AddByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 			else
 			{
 				bRetVal = mFalse;
+			}
+		}
+	}
+
+	return bRetVal;
+}
+
+mBool AddByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
+{
+	mBool bRetVal = mFalse;
+	SllNode* pstNewNode = NULL;
+	pstNewNode = (SllNode*)malloc(sizeof(SllNode));
+
+	if (NULL != pstNewNode)
+	{
+		pstNewNode->nVal = _nVal;
+		pstNewNode->pstNext = NULL;
+		if (0 == _unIdx)
+		{
+			// Front
+			if (0 == _pstList->unCount)
+			{
+				_pstList->pstFront = pstNewNode;
+				_pstList->pstRear = pstNewNode;
+				bRetVal = mTrue;
+			}
+			else if (0 < _pstList->unCount)
+			{
+				pstNewNode->pstNext = _pstList->pstFront;
+				_pstList->pstFront = pstNewNode;
+				bRetVal = mTrue;
+			}
+		}
+		else if (_unIdx >= _pstList->unCount)
+		{
+			// Rear
+			_pstList->pstRear->pstNext = pstNewNode;
+			_pstList->pstRear = pstNewNode;
+			bRetVal = mTrue;
+		}
+		else
+		{
+			// middle
+			SllNode* pstFastNode = _pstList->pstFront->pstNext;
+			SllNode* pstSlowNode = _pstList->pstFront;
+
+			mUInt32 unIdx = 1;
+			for (unIdx = 1; unIdx < _pstList->unCount; unIdx++)
+			{
+				if (_unIdx == unIdx)
+				{
+					pstNewNode->pstNext = pstFastNode;
+					pstSlowNode->pstNext = pstNewNode;
+					bRetVal = mTrue;
+					break;
+				}
+			}
+		}
+	}
+
+	if (mTrue == bRetVal)
+	{
+		_pstList->unCount += 1;
+	}
+
+	return bRetVal;
+}
+
+mBool DeleteByValue(SingleLinkedList* _pstList, mInt32 _nVal)
+{
+	mBool bRetVal = mFalse;
+	
+	if (0 == _pstList->unCount)
+	{
+		bRetVal = mFalse;
+	}
+	else
+	{
+		SllNode* pstCurNode = _pstList->pstFront;
+		SllNode* pstPreNode = NULL;
+
+		mUInt32 unIdx = 0;
+		if (NULL != pstCurNode)
+		{
+			for (unIdx = 0; unIdx < _pstList->unCount; unIdx++)
+			{
+				if (pstCurNode->nVal == _nVal)
+				{
+					if (0 == unIdx)
+					{
+						// front
+						_pstList->pstFront = pstCurNode->pstNext;
+						free(pstCurNode);
+						_pstList->unCount--;
+						bRetVal = mTrue;
+					}
+					else if (NULL == pstCurNode->pstNext)
+					{
+						// rear
+						_pstList->pstRear = pstPreNode;
+						_pstList->pstRear->pstNext = NULL;
+						free(pstCurNode);
+						_pstList->unCount--;
+						bRetVal = mTrue;
+					}
+					else
+					{
+						// middle
+						pstPreNode->pstNext = pstCurNode->pstNext;
+						pstCurNode->pstNext = NULL;
+						free(pstCurNode);
+						_pstList->unCount--;
+						bRetVal = mTrue;
+					} // else
+					break;
+				} // if
+				pstPreNode = pstCurNode;
+				pstCurNode = pstCurNode->pstNext;
+			} // for
+		} // if
+	}
+
+	return bRetVal;
+}
+
+mBool DeleteByIndex(SingleLinkedList* _pstList, mUInt32 _nIdx)
+{
+	mBool bRetVal = mFalse;
+
+	if (0 == _pstList->unCount)
+	{
+		bRetVal = mFalse;
+	}
+	else
+	{
+		if (0 == _nIdx)
+		{
+			// front
+			SllNode* pstTempNode = _pstList->pstFront;
+			_pstList->pstFront = pstTempNode->pstNext;
+			if (_pstList->pstRear == pstTempNode)
+			{
+				_pstList->pstRear = pstTempNode->pstNext;
+			}
+			free(pstTempNode);
+			_pstList->unCount--;
+			bRetVal = mTrue;
+		}
+		else if (_nIdx >= _pstList->unCount)
+		{
+			// rear
+			SllNode* pstCurNode = _pstList->pstRear;
+			SllNode* pstPrevNode = _pstList->pstFront;
+
+			while (pstCurNode != pstPrevNode->pstNext)
+			{
+				pstPrevNode = pstPrevNode->pstNext;
+			}
+
+			pstPrevNode->pstNext = NULL;
+			_pstList->pstRear = pstPrevNode;
+			pstCurNode->pstNext = NULL;
+			free(pstCurNode);
+			_pstList->unCount--;
+			bRetVal = mTrue;
+		}
+		else
+		{
+			// middle
+			SllNode* pstCurNode = _pstList->pstFront;
+			SllNode* pstPrevNode = NULL;
+
+			mUInt32 unIdx = 0;
+			while (NULL != pstCurNode)
+			{
+				if (_nIdx == unIdx)
+				{
+					pstPrevNode->pstNext = pstCurNode->pstNext;
+					pstCurNode->pstNext = NULL;
+					free(pstCurNode);
+					_pstList->unCount--;
+					bRetVal = mTrue;
+					break;
+				}
+				pstPrevNode = pstCurNode;
+				pstCurNode = pstCurNode->pstNext;
+				unIdx++;
 			}
 		}
 	}

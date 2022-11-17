@@ -1,5 +1,4 @@
 // This header file is for single linked list.
-
 #pragma once
 
 #include "../mType.h"
@@ -7,7 +6,7 @@
 typedef struct _SLLNode
 {
 	mInt32 nVal;
-	SllNode* pstNext;
+	struct _SLLNode* pstNext;
 }SllNode;
 
 typedef struct _SingleLinkedList
