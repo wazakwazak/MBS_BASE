@@ -1,23 +1,23 @@
 #include "DoubleLinkedList.h"
 #include <stdlib.h>
 
-mBool IsEmpty(DoubleLinkedList* _pstList)
+mBool DllIsEmpty(DoubleLinkedList* _pstList)
 {
 	// true: list it empty, false: list has some nodes.
 	return 0 == _pstList->unCount ? mTrue : mFalse;
 }
 
-DllNode* GetLastNode(DoubleLinkedList* _pstList)
+DllNode* DllGetLastNode(DoubleLinkedList* _pstList)
 {
 	// Return the last node of the list
 	return _pstList->pstRear;
 }
 
-mBool GetNodeIdxByValue(DoubleLinkedList* _pstList, mInt32 _nVal, mUInt32* _punIdx)
+mBool DllGetNodeIdxByValue(DoubleLinkedList* _pstList, mInt32 _nVal, mUInt32* _punIdx)
 {
 	mBool bRetVal = mFalse;
 
-	if (mTrue == IsEmpty(_pstList))
+	if (mTrue == DllIsEmpty(_pstList))
 	{
 		// The list is empty. Therefore, can not return any index value.
 		bRetVal = mFalse;
@@ -49,11 +49,11 @@ mBool GetNodeIdxByValue(DoubleLinkedList* _pstList, mInt32 _nVal, mUInt32* _punI
 	return bRetVal;
 }
 
-mBool GetNodeValueByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _punVal)
+mBool DllGetNodeValueByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _punVal)
 {
 	mBool bRetVal = mFalse;
 
-	if (mTrue == IsEmpty(_pstList))
+	if (mTrue == DllIsEmpty(_pstList))
 	{
 		bRetVal = mFalse;
 	}
@@ -97,7 +97,7 @@ mBool GetNodeValueByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _p
 	return bRetVal;
 }
 
-mBool AddbyValue(DoubleLinkedList* _pstList, mInt32 _nVal)
+mBool DllAddbyValue(DoubleLinkedList* _pstList, mInt32 _nVal)
 {
 	mBool bRetVal = mFalse;
 
@@ -117,7 +117,7 @@ mBool AddbyValue(DoubleLinkedList* _pstList, mInt32 _nVal)
 		pstNewNode->pstNext = NULL;
 		pstNewNode->pstPrev = _pstList->pstRear;
 
-		if (mTrue == IsEmpty(_pstList))
+		if (mTrue == DllIsEmpty(_pstList))
 		{
 			// The list is empty. add the new data in the begining of the list
 			_pstList->pstFront = pstNewNode;
@@ -145,7 +145,7 @@ mBool AddbyValue(DoubleLinkedList* _pstList, mInt32 _nVal)
 }
 
 
-mBool AddByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
+mBool DllAddByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
 {
 	mBool bRetVal = mFalse;
 
@@ -164,7 +164,7 @@ mBool AddByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
 		pstNewNode->pstNext = NULL;
 		pstNewNode->pstPrev = NULL;
 
-		if (mTrue == IsEmpty(_pstList))
+		if (mTrue == DllIsEmpty(_pstList))
 		{
 			_pstList->pstFront = pstNewNode;
 			_pstList->pstRear = pstNewNode;
@@ -225,19 +225,139 @@ mBool AddByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
 	return bRetVal;
 }
 
-mBool DeleteByValue(DoubleLinkedList* _pstList, mInt32 _nVal)
+mBool DllDeleteByValue(DoubleLinkedList* _pstList, mInt32 _nVal)
 {
 	mBool bRetVal = mFalse;
 
+	if (mTrue == DllIsEmpty(_pstList))
+	{
+		// there is no data in the list
+		bRetVal = mFalse;
+	}
+	else
+	{
+		if (_nVal == _pstList->pstFront->nVal)
+		{
+			// front
+			DllNode* pstTemp = _pstList->pstFront;
+
+			if (NULL == _pstList->pstFront->pstNext)
+			{
+				_pstList->pstFront = NULL;
+				_pstList->pstRear = NULL;
+			}
+			else
+			{
+				_pstList->pstFront->pstNext->pstPrev = NULL;
+				_pstList->pstFront = _pstList->pstFront->pstNext;
+			}
+
+			_pstList->unCount--;
+			free(pstTemp);
+			bRetVal = mTrue;
+		}
+		else if (_nVal == _pstList->pstFront->nVal)
+		{
+			// rear
+			DllNode* pstTemp = _pstList->pstRear;
+			_pstList->pstRear = pstTemp->pstPrev;
+			_pstList->pstRear->pstNext = NULL;
+			pstTemp->pstPrev = NULL;
+			_pstList->unCount--;
+			free(pstTemp);
+			bRetVal = mTrue;
+		}
+		else
+		{
+			// middle
+			DllNode* pstTemp = _pstList->pstFront->pstNext;
+
+			while (NULL != pstTemp)
+			{
+				if (_nVal == pstTemp->nVal)
+				{
+					break;
+				}
+				pstTemp = pstTemp->pstNext;
+			}
+
+			if (NULL == pstTemp)
+			{
+				// there is no the same data. could not find the value
+				bRetVal = mTrue;
+			}
+			else
+			{
+				pstTemp->pstPrev->pstNext = pstTemp->pstNext;
+				pstTemp->pstNext->pstPrev = pstTemp->pstPrev;
+				pstTemp->pstNext = NULL;
+				pstTemp->pstPrev = NULL;
+				free(pstTemp);
+				_pstList->unCount--;
+				bRetVal = mTrue;
+			}
+		}
+	}
 
 	return bRetVal;
 }
 
-mBool DeleteByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx)
+mBool DllDeleteByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx)
 {
 	mBool bRetVal = mFalse;
 
-	
+	if (mTrue == DllIsEmpty(_pstList))
+	{
+		// There is no data in the list.
+		bRetVal = mFalse;
+	}
+	else
+	{
+		if (0 == _unIdx)
+		{
+			// Front
+			DllNode* pstTemp = _pstList->pstFront;
+
+			if (NULL == _pstList->pstFront->pstNext)
+			{
+				_pstList->pstFront = NULL;
+				_pstList->pstRear = NULL;
+			}
+			else
+			{
+				_pstList->pstFront->pstNext->pstPrev = NULL;
+				_pstList->pstFront = _pstList->pstFront->pstNext;
+			}
+			free(pstTemp);
+		}
+		else if (_unIdx >= _pstList->unCount - 1)
+		{
+			// Rear
+			DllNode* pstTemp = _pstList->pstRear;
+			_pstList->pstRear = pstTemp->pstPrev;
+			_pstList->pstRear->pstNext = NULL;
+			pstTemp->pstPrev = NULL;
+			free(pstTemp);
+		}
+		else
+		{
+			// Middle
+			DllNode* pstTemp = _pstList->pstFront;
+			unsigned int unIdx = 0;
+			for (unIdx = 0; unIdx < _unIdx; unIdx++)
+			{
+				pstTemp = pstTemp->pstNext;
+			}
+
+			pstTemp->pstPrev->pstNext = pstTemp->pstNext;
+			pstTemp->pstNext->pstPrev = pstTemp->pstPrev;
+			pstTemp->pstNext = NULL;
+			pstTemp->pstPrev = NULL;
+			free(pstTemp);
+		}
+		_pstList->unCount--;
+		bRetVal = mTrue;
+	}
 
 	return bRetVal;
 }

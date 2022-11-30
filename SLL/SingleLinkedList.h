@@ -16,13 +16,13 @@ typedef struct _SingleLinkedList
 	SllNode* pstRear;
 }SingleLinkedList;
 
-mBool		bIsEmpty(SingleLinkedList* _pstList);
-SllNode*	GetLastNode(SingleLinkedList* _pstList);
+mBool		SllIsEmpty(SingleLinkedList* _pstList);
+SllNode*	SllGetLastNode(SingleLinkedList* _pstList);
 
-mUInt32		GetNodeIdxByValue(SingleLinkedList* _pstList, mInt32 _nVal);
-mBool		GetNodeValueByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _pnVal);
+mUInt32		SllGetNodeIdxByValue(SingleLinkedList* _pstList, mInt32 _nVal);
+mBool		SllGetNodeValueByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _pnVal);
 
-mBool		AddByValue(SingleLinkedList* _pstList, mInt32 _nVal);
-mBool		AddByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal);
-mBool		DeleteByValue(SingleLinkedList* _pstList, mInt32 _nVal);
-mBool		DeleteByIndex(SingleLinkedList* _pstList, mUInt32 _nIdx);
+mBool		SllAddByValue(SingleLinkedList* _pstList, mInt32 _nVal);
+mBool		SllAddByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal);
+mBool		SllDeleteByValue(SingleLinkedList* _pstList, mInt32 _nVal);
+mBool		SllDeleteByIndex(SingleLinkedList* _pstList, mUInt32 _nIdx);

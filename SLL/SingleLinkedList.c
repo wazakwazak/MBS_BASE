@@ -1,18 +1,18 @@
 #include "SingleLinkedList.h"
 #include <stdlib.h>
 
-mBool bIsEmpty(SingleLinkedList* _pstList)
+mBool SllIsEmpty(SingleLinkedList* _pstList)
 {
 	// true: list it empty, false: list has some nodes.
 	return 0 == _pstList->unCount ? mTrue : mFalse;
 }
 
-SllNode* GetLastNode(SingleLinkedList* _pstList)
+SllNode* SllGetLastNode(SingleLinkedList* _pstList)
 {
 	return _pstList->pstRear;
 }
 
-mUInt32 GetNodeIdxByValue(SingleLinkedList* _pstList, mInt32 _nVal)
+mUInt32 SllGetNodeIdxByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 {
 	// -1  : there does not exist the same value in the list.
 	// else: found the same value in the list. return the index of node having the value.
@@ -36,7 +36,7 @@ mUInt32 GetNodeIdxByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 	return unRetVal;
 }
 
-mBool GetNodeValueByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _pnVal)
+mBool SllGetNodeValueByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _pnVal)
 {
 	mBool bRetVal = mFalse;
 
@@ -66,7 +66,7 @@ mBool GetNodeValueByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _p
 	return bRetVal;
 }
 
-mBool AddByValue(SingleLinkedList* _pstList, mInt32 _nVal)
+mBool SllAddByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 {
 	// add new data at the end of the list.
 	mBool bRetVal = mFalse;
@@ -98,7 +98,7 @@ mBool AddByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 		{
 			if (_pstList->unCount < UINT_MAX)
 			{
-				SllNode* pstLastNode = GetLastNode(_pstList);
+				SllNode* pstLastNode = SllGetLastNode(_pstList);
 				pstLastNode->pstNext = pstNewNode;
 				_pstList->pstRear = pstNewNode;
 				_pstList->unCount++;
@@ -114,7 +114,7 @@ mBool AddByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 	return bRetVal;
 }
 
-mBool AddByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
+mBool SllAddByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
 {
 	mBool bRetVal = mFalse;
 	SllNode* pstNewNode = NULL;
@@ -175,7 +175,7 @@ mBool AddByIndex(SingleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal)
 	return bRetVal;
 }
 
-mBool DeleteByValue(SingleLinkedList* _pstList, mInt32 _nVal)
+mBool SllDeleteByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 {
 	mBool bRetVal = mFalse;
 	
@@ -232,7 +232,7 @@ mBool DeleteByValue(SingleLinkedList* _pstList, mInt32 _nVal)
 	return bRetVal;
 }
 
-mBool DeleteByIndex(SingleLinkedList* _pstList, mUInt32 _nIdx)
+mBool SllDeleteByIndex(SingleLinkedList* _pstList, mUInt32 _nIdx)
 {
 	mBool bRetVal = mFalse;
 

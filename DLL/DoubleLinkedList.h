@@ -17,14 +17,14 @@ typedef struct _DoubleLinkedList
 	DllNode* pstRear;
 }DoubleLinkedList;
 
-mBool		IsEmpty(DoubleLinkedList* _pstList);
-DllNode*	GetLastNode(DoubleLinkedList* _pstList);
+mBool		DllIsEmpty(DoubleLinkedList* _pstList);
+DllNode*	DllGetLastNode(DoubleLinkedList* _pstList);
 
-mBool		GetNodeIdxByValue(DoubleLinkedList* _pstList, mInt32 _nVal, mUInt32* _punIdx);
-mBool		GetNodeValueByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _pnVal);
+mBool		DllGetNodeIdxByValue(DoubleLinkedList* _pstList, mInt32 _nVal, mUInt32* _punIdx);
+mBool		DllGetNodeValueByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32* _pnVal);
 
-mBool		AddbyValue(DoubleLinkedList* _pstList, mInt32 _nVal);
-mBool		AddByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal);
-mBool		DeleteByValue(DoubleLinkedList* _pstList, mInt32 _nVal);
-mBool		DeleteByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx);
+mBool		DllAddbyValue(DoubleLinkedList* _pstList, mInt32 _nVal);
+mBool		DllAddByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx, mInt32 _nVal);
+mBool		DllDeleteByValue(DoubleLinkedList* _pstList, mInt32 _nVal);
+mBool		DllDeleteByIndex(DoubleLinkedList* _pstList, mUInt32 _unIdx);
 
