@@ -5,12 +5,13 @@
 #define DATA_SIGNED   1
 
 typedef enum _DateType {
-	eDataTypeChar,
-	eDataTypeShort,
-	eDataTypeInteger,
-	eDataTypeLong,
-	eDataTypeFloat,
-	eDataTypeDouble,
+	eDataTypeChar,		// 1 Byte
+	eDataTypeShort,		// 2 Bytes
+	eDataTypeInteger,	// 4 Bytes
+	eDataTypeLong,		// 4 Bytes
+	eDataTypeLongLong,	// 8 Bytes
+	eDataTypeFloat,		// 4 Bytes
+	eDataTypeDouble,	// 8 Bytes
 	eDataTypeUnknown
 }DataType;
 
